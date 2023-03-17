@@ -114,11 +114,19 @@ zeroBtns.forEach(each => {
         if (a === '') {
             a = calcDisplay.innerText;
         }
+        // если a начинается не с 0 или содержит точку и нет операции
         if ((a[0] !== '0' || a.includes('.')) && operation === '') {
             a += evt.target.innerText;
         }
+        // если b начинается не с 0 или содержит точку и есть операция
         if ((b[0] !== '0' || b.includes('.')) && operation !== '') {
-            b += evt.target.innerText;
+            // если b пустое и нажата кнопка 00 (избегаем дублирования нулей в начале b)
+            if (b === '' && evt.target.innerText === '00') {
+                b += 0;
+            }
+            else {
+                b += evt.target.innerText;
+            }
         }
         showOnDisplay();
     });
@@ -152,14 +160,20 @@ function showOnDisplay() {
 function pressNumbers(evt) {
     // если операции нет заполняем а
     if (operation === '') {
-        if (a.length < 13) {
+        if (a.length < 14) {
             a += evt.target.innerText;
             showOnDisplay();
         }
     }
     else {
-        if (b.length < 13) {
-            b += evt.target.innerText;
+        if (b.length < 14) {
+            // если b начинается не с 0 или содержит точку (защита от ввода в формате '0523')
+            if (b[0] !== '0' || b.includes('.')) {
+                b += evt.target.innerText;
+            }
+            else {
+                b = evt.target.innerText;
+            }
             showOnDisplay();
         }
     }
@@ -207,7 +221,7 @@ function calculate() {
             break;
 
         case operations.division:
-            result = division(a, b);
+            b === 0 ? alert('На 0 делить нельзя') : result = division(a, b);
             break;
 
         case operations.multiply:
@@ -215,13 +229,18 @@ function calculate() {
             break;
 
         default:
-            result = calcDisplay.innerText;
+            result = +calcDisplay.innerText;
             break;
     }
 
-    resetAll();
+    if (result !== null) {
+        resetAll();
+        calcDisplay.innerText = +result.toFixed(15);
+    }
+    else {
+        a = String(a); b = String(b); operation = String(operation);
+    }
     console.log('a = ' + a, 'operation ' + `"${operation}"`, 'b = ' + b, 'result = ' + result);
-    calcDisplay.innerText = +result.toFixed(15);
 }
 
 

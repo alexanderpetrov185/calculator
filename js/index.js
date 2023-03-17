@@ -45,23 +45,24 @@ removeLast.addEventListener('click', () => {
     // если длинна строки больше 1 то вернуть строку без последнего символа
     if (calcDisplay.innerText.length > 1) {
         calcDisplay.innerText = calcDisplay.innerText.slice(0, -1);
-    }
-    else {
-        calcDisplay.innerText = 0;
-    }
-    // переопределяем переменные в случае удаления последнего символа
-    // если операция есть то разделить строку по операции и переопределить числа
-    if (operation != '') {
-        let displayStrings = calcDisplay.innerText.split(operation);
-        a = displayStrings[0];
-        // если второе число после переопределения существует то переопределить его 
-        if (displayStrings[1] != undefined) {
-            b = displayStrings[1];
+        // переопределяем переменные в случае удаления последнего символа
+        // если операция есть то разделить строку по операции и переопределить числа
+        if (operation != '') {
+            let displayStrings = calcDisplay.innerText.split(operation);
+            a = displayStrings[0];
+            // если второе число после переопределения существует то переопределить его 
+            if (displayStrings[1] != undefined) {
+                b = displayStrings[1];
+            }
+        }
+        else {
+            // иначе первое число равно числу на дисплее
+            a = calcDisplay.innerText;
         }
     }
     else {
-        // иначе первое число равно числу на дисплее
-        a = calcDisplay.innerText;
+        resetAll();
+        calcDisplay.innerText = 0;
     }
 });
 
@@ -151,14 +152,17 @@ function showOnDisplay() {
 function pressNumbers(evt) {
     // если операции нет заполняем а
     if (operation === '') {
-        if (a < 13) {
+        if (a.length < 13) {
             a += evt.target.innerText;
+            showOnDisplay();
         }
     }
     else {
-        b += evt.target.innerText;
+        if (b.length < 13) {
+            b += evt.target.innerText;
+            showOnDisplay();
+        }
     }
-    showOnDisplay();
 }
 
 //функкция нажатия на операцию

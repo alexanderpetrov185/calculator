@@ -47,11 +47,11 @@ removeLast.addEventListener('click', () => {
         calcDisplay.innerText = calcDisplay.innerText.slice(0, -1);
         // переопределяем переменные в случае удаления последнего символа
         // если операция есть то разделить строку по операции и переопределить числа
-        if (operation != '') {
+        if (operation !== '') {
             let displayStrings = calcDisplay.innerText.split(operation);
             a = displayStrings[0];
             // если второе число после переопределения существует то переопределить его 
-            if (displayStrings[1] != undefined) {
+            if (displayStrings[1] !== undefined) {
                 b = displayStrings[1];
             }
         }

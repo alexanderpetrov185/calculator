@@ -22,3 +22,4 @@ const operations = {
     division: '÷',
     multiply: '✖'
 }
+
